@@ -3,8 +3,6 @@ HashTable.cpp
 Duncan and Eddy
 12/3/2022
 
-CS15 Proj4 Gerp
-
 Implements the Hash ADT using an array of buckets, which gives us constant
 time access to each Bucket and the ability to control when the Hash expands
 in order to keep the average constant time access and insertion.
