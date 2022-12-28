@@ -3,8 +3,6 @@ HashTable.h
 Duncan and Eddy
 12/3/2022
 
-CS15 Proj4 Gerp
-
 Declaration of HashTable class. Hashtable is implemented by an array of 
 Buckets, and each bucket contains a KeyValue type list. KeyValue has two 
 elements -- a string word and a list of int indicies that represent the 
