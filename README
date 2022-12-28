@@ -1,6 +1,4 @@
 *********************************************************
-* Project 4: zap
-* CS 15
 * Duncan Johnson
 * Eddy Zhang
 *********************************************************
@@ -13,14 +11,6 @@ every line with that words is quickly output to a given file.
 Users can search for words case-sensitively or without regard
 for upper and lowercase, and users can change the file to which
 the output is sent. 
-
----------------------------------------------------------
-
-Acknowledgements
-
-Professor De Lillo and Professor Kazerounian
-Lab TAs Lexi, Phila, and Ellis
-CS15 Piazza
 
 ---------------------------------------------------------
 
@@ -65,21 +55,6 @@ unit_tests.h
 
 Makefile
     Commands to build Gerp, Gerp.o, HashTable.o, and unit_test our program.
-
-
-Test Files
-
-output.txt, 
-ref_output.txt,
-
-    Outputs of out gerp program and the reference the_gerp, which we sorted 
-    and diffed to make sure it worked.
-
-traverseSubDirs,
-traverseOnlyFile
-    We used these to diff test our directory traversal function during phase
-    1, for the main Gerp implementation, we mostly used assert statements
-    because the output was going to a file rather than std::cout or std::cerr
 
 ---------------------------------------------------------
 
