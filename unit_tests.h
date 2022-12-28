@@ -3,8 +3,6 @@ unit_tests.h
 Duncan and Eddy
 12/2/2022
 
-CS 15 Proj4 Gerp
-  
 We unit tested all of our functions in HashTable and Gerp, including edge
 cases and diff testing. We make all member variables public during testing
 in order to make sure that the Hash Tables and vectors stored our data
