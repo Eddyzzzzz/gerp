@@ -3,8 +3,6 @@ Gerp.h
 Duncan and Eddy
 12/8/2022
 
-CS15 Proj4 Gerp
-
 Functions declarations of Gerp class, the only public function is the 
 constructor which gets called by main.cpp with the command line arguments,
 then two Hash Tables are created, one with case sensitive words and one
