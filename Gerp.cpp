@@ -3,8 +3,6 @@ Gerp.cpp
 Duncan and Eddy
 12/8/2022
 
-CS15 Proj4 Gerp
-
 Gerp.cpp implements the functions declared in Gerp.h by first setting
 up the two different Hash Tables, traversing the directory file tree,
 and then indexing each file and pulling the lines into our vector "Lines"
