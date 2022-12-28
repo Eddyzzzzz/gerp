@@ -3,8 +3,6 @@ FSTreeTraversal.cpp
 Duncan and Eddy
 12/2/2022
 
-CS15 Proj4 Gerp
-
 Take the highest directory as a command line argument, and then print the 
 full paths of all the files accessible from that directory. Recursively
 find all files in all subdirectories of the provided directory.
