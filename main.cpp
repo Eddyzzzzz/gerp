@@ -3,8 +3,6 @@ main.cpp
 Duncan and Eddy 
 12/10/2022
 
-CS 15 Proj4 gerp
-
 main.cpp runs the gerp and checks if gerp is called in the right way,
 passing command line arguments to the Gerp constructor. If the user types
 in the wrong number of arguments, the program exits and tells them the 
