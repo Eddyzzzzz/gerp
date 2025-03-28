@@ -10,7 +10,7 @@ Gerp is an efficient, indexed search tool that processes a directory, indexing e
 - **Recursive Directory Traversal**: Indexes all files within a given directory structure.
 - **Optimized Memory Management**: Expands dynamically while maintaining a load factor below 70%.
 - **Comprehensive Testing**: Unit tests and diff-based validation ensure correctness and robustness.
-
+ 
 ---
 
 ## How It Works
