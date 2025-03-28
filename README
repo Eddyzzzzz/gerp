@@ -1,195 +1,112 @@
-*********************************************************
-* Duncan Johnson
-* Eddy Zhang
-*********************************************************
+# Gerp: A Fast Indexed Search Tool
 
-Purpose
+## Overview
+Gerp is an efficient, indexed search tool that processes a directory, indexing each word for fast retrieval. Unlike traditional search tools, Gerp enables case-sensitive and case-insensitive searches while maintaining high performance using hash tables. This project demonstrates expertise in data structures, algorithm optimization, and systems programming.
 
-Gerp takes in a directory and spends time indexing each word 
-from it, which then allows the user to search for words, and
-every line with that words is quickly output to a given file. 
-Users can search for words case-sensitively or without regard
-for upper and lowercase, and users can change the file to which
-the output is sent. 
+## Features
+- **Indexed Word Search**: Quickly finds and outputs all occurrences of a given word in indexed files.
+- **Case-Sensitive & Case-Insensitive Modes**: Supports both exact case matching and lowercase normalization for flexible searching.
+- **Efficient Hash Table Implementation**: Uses chaining to handle collisions and ensures fast lookup times.
+- **Recursive Directory Traversal**: Indexes all files within a given directory structure.
+- **Optimized Memory Management**: Expands dynamically while maintaining a load factor below 70%.
+- **Comprehensive Testing**: Unit tests and diff-based validation ensure correctness and robustness.
 
----------------------------------------------------------
+---
 
-Program Files
+## How It Works
+1. **Indexing Phase**:
+   - Recursively traverses the specified directory.
+   - Reads each file line by line, extracting words and storing them in a hash table.
+   - Creates a mapping between words and their line locations for quick lookup.
 
-main.cpp
-    Parses command line arguments from the user, passes 
-    the directory to search from and output file to Gerp.
-    Runs Gerp.
-    
-Gerp.h
-    Public constructor that takes the command line arguments from main,
-    private member variables for the case sensitive and lowercase Hash 
-    Tables, vector of all lines of text that could be printed to output.
+2. **Query Phase**:
+   - Accepts search queries from users.
+   - Retrieves matching lines from indexed data efficiently.
+   - Outputs results to the specified file.
 
-Gerp.cpp
-    Sets up the two different Hash Tables by traversing the directory, 
-    indexing each file, putting the lines into a vector and each word 
-    into the two Hash Tables.
-    Also runs game loop, asking the user for commands and executes
-    the corresponding functionality.
+---
 
-HashTable.h
-    Declaration of HashTable class. Hashtable is implemented by an array of 
-    Buckets, and each bucket contains a KeyValue type list. KeyValue has two 
-    elements -- a string word and a list of int indicies that represent the 
-    lines the word appears. We used chaining to solve collisions.
+## Installation & Usage
+### Compilation
+```sh
+make gerp
+```
 
-HashTable.cpp
-    Implements the Hash ADT, which gives us constant time access to each 
-    Bucket and the ability to control when the Hash expands in order to 
-    keep the average constant time access and insertion.
-    Inserts words as keys and integers as values, clients can get a list
-    of all integers inserted for a given word.
+### Running the Program
+```sh
+./gerp DirectoryToIndex OutputFile
+```
+- `DirectoryToIndex`: Directory to scan and index.
+- `OutputFile`: File where search results are stored.
 
+---
 
-unit_tests.h
-    Unit tests for all Hash Table and Gerp functionality, file output was
-    put in temporary files and then read back in using assertions to make sure
-    it's the correct output. Hash Table member variables were made private
-    in order to check that data was put into the Hash Table correctly.
+## Data Structures
+- **Hash Table**: Implemented with an array of buckets using linked list chaining.
+- **Bucket**: Contains a linked list of Key-Value pairs.
+- **Key-Value Pair**: Stores a word as the key and a list of line indices where the word appears.
+- **Set**: Used to remove duplicate words in a line before inserting into the hash table.
 
-Makefile
-    Commands to build Gerp, Gerp.o, HashTable.o, and unit_test our program.
+---
 
----------------------------------------------------------
+## Algorithms
+### Directory Parsing
+- Uses **recursive traversal** to scan all subdirectories and files.
+- Calls `ParseFile()` for each file.
 
-Compile
+### File Parsing (`ParseFile()` → `ParseLine()`)
+- Reads each file line-by-line.
+- Extracts words by stripping non-alphanumeric characters.
+- Adds words to a **set** to remove duplicates.
+- Stores words in **case-sensitive** and **lowercase hash tables**.
+- Saves file path, line number, and content for quick retrieval.
 
-    make gerp
+### Hash Table Operations
+- **Insertion**: Uses a **hash function** to determine bucket placement.
+- **Collision Resolution**: Uses **chaining** via linked lists.
+- **Expansion**: Doubles hash table size when the **load factor** exceeds 70%.
+- **Querying**: Retrieves words efficiently using **O(1) average lookup time**.
 
----------------------------------------------------------
+---
 
-Run
+## Testing
+### Unit Testing
+- Validates individual hash table operations.
+- Ensures correct indexing and retrieval.
 
-    ./gerp DirectoryToIndex OutputFile
+### Integration Testing
+- Confirms Gerp correctly traverses directories and processes files.
 
-    where DirectoryToIndex is the directory the user wants to search and 
-    the results will be printed in OutputFile.
-    
----------------------------------------------------------
+### Diff-Based Validation
+- Compares Gerp's output with `the_gerp` reference implementation.
+- Uses sorting and `diff` for consistency checking.
 
-Architectural Overview
+### Performance Testing
+- Runs **Valgrind** to detect memory leaks and inefficiencies.
+- Benchmarks execution time on large text datasets.
 
-Each instance of Gerp has three important data structures:
-a vector of all lines of text from the indexed directory
-a Hash Table of case-sensitive words
-a Hash Table of all lowercase words
+---
 
-Each Hash Table is an array of Buckets.
+## Comparison to `grep`
+| Feature | `grep` | **Gerp** |
+|---------|--------|---------|
+| Real-time search | ✅ | ❌ (pre-indexed) |
+| Indexed search | ❌ | ✅ |
+| Case-insensitive search | ✅ | ✅ |
+| Recursive directory traversal | ✅ | ✅ |
+| Optimized for large datasets | ❌ | ✅ |
 
-A Bucket is a a struct we created which has a Linked List of 
-KeyValues. This allows us to chain together collisions inside each Bucket.
+---
 
-KeyValue is a struct we created with two pieces of information:
-a string word
-a list of integers
-This lets us iterate through the chain to find the exact list of
-integers we want to return to the client, and when the client inserts
-a new pair of string and int, we can append the integer to the KeyValue
-with the matching key. 
+## Contributors
+- **Duncan Johnson**
+- **Eddy Zhang**
 
+---
 
----------------------------------------------------------
+## Future Improvements
+- **Multi-threading support** for faster indexing.
+- **Compressed storage format** to reduce memory usage.
+- **Improved query features** such as regex matching.
 
-Data Structures
-
-We choose array to implement our hash table because array has constant 
-access time O(1).
-
-It takes O(n) to expand the hash table and rehash all the elements.
-We use chaining to prevent collisions. Since we always keep the load factor 
-less than 70%, we are able to assure that the length of each list is short 
-enough to maintain an approximate constant accessing and inserting time.
-
-For each KeyValue, we also used linked list to store the indicies of words, 
-which takes O(1) to insert and we only need to iterate through the whole 
-list, so getting index-based access is not necessary. In order to make sure
-we don't insert the same line twice (in the case it has the same word twice),
-we first inserted all of the words on the line into a set to eliminate any
-duplicates, this takes O(log(w) since set is a BST), where w is the number 
-of words on the line, but w is never larger than 20 or 30 or so, so this does
-not effect our constant time insert very much.
-
-Since we use array for hash table, each bucket is stored on the heap, which 
-takes the majority of the memory.
-
----------------------------------------------------------
-
-Algorithms
-
-Tree traversal uses recursion, for each folder in our directory,
-we first parse all of the files using the ParseFile() function, which
-will be explained below, and then recursively searches all subdirectories,
-passing along the path so that the vector of lines correctly stores the
-filepath of each file so that when the user queries a word, we can quickly
-print out the line.
-
-In ParseFile(), we first open the file, then we iterate through each line
-of the file and call ParseLine() on it, passing along the line number.
-ParseLine() turns the line into a stringstream so we can read each word
-one at a time, we strip each word of its leading and trailing non-
-alphanumeric characters and add all words to a non-duplicate set.
-We then iterate through that set, adding each word to the case-sensitive
-hash, and the lowercase version of each word to the lowercase hash.
-Finally, we assemble the whole line that will be printed to the Output File,
-including the file path, the line number, and the actual contents of the line.
-
-Our second intersting algorithm is the HashTable insert function.
-First we get the bucket that we need to search through using our GetBucket
-function which uses the native hash function to compute our hash value.
-Then we iterate through the list of KeyValue pairs in the Bucket to check
-if the word already exists. If it does, we simply add the index that the word
-appears on to the list of integers in the KeyValue with the matching word.
-If the word does not exist in the bucket, we create a new KeyValue object
-with the inserted word and the list starting with just the int index being
-inserted currently, and add it to the bucket. 
-
-During this process, if we're created a new KeyValue object, we make cause
-our Load Factor to exceed 70%, which could have effects on our access and 
-insertion time. In order to expand, we create a new hash array that is 
-twice the size of the old one, and then we iterate through each Bucket
-of the old hash array, rehashing each KeyValue into its new Bucket. We
-then delete the old hash array, and our hash is now twice as large.
-
----------------------------------------------------------
-
-Testing
-
-There were a lot of phases to our testing.
-
-First, our Week 1 testing was very simple putting in strings and asserting
-that the string that came out was correctly parsed, and traversing through 
-the directories included us creating test directories and diffing the
-output.
-
-Next, we built our Hash Table implementation and tested the insert and
-getValues functions by manually iterating through every Bucket, checking
-every KeyValue to see if data was insertted in the correct place. We tested
-the expand function by making really small Hash Tables, inserting new 
-elements, and making sure data was still accessible.
-
-Our next phase was the Gerp setup, when Gerp traverses through the directory
-and places all the data into the vector and Hash Tables. We reused a lot 
-of the testing functionality from the Hash Table to make sure that the 
-Hash Tables were being set up correctly when grabbing data from an actual
-directory.
-
-Our final unit testing phase was the Gerp search phase, which is the bulk
-of the Gerp game loop. We made sure that searching for words normally 
-and with the @insensitive flag worked both when the word existed --
-the correct line prints out, and when the word doesn't exist -- the correct
-"Not Found" line outputs into the file. 
-
-We used diff testing to match our implementation against the reference
-the_gerp, running the same commands on the same directory, then sorting
-the lines and diffing them to make sure that the output is the same.
-
-We also ran our program on Valgrind on the medium Gutenberg dataset, and 
-found a latent Valgrind error with a function which we were able to then
-diagnose and fix, so Valgrind was very helpful in making sure we don't
-have any hidden errors. 
+---
