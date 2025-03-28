@@ -1,112 +1,106 @@
-# Gerp: A Fast Indexed Search Tool
+# 🔍 Gerp: Fast Word Indexing and Search  
 
-## Overview
-Gerp is an efficient, indexed search tool that processes a directory, indexing each word for fast retrieval. Unlike traditional search tools, Gerp enables case-sensitive and case-insensitive searches while maintaining high performance using hash tables. This project demonstrates expertise in data structures, algorithm optimization, and systems programming.
+**Authors**: Duncan Johnson, Eddy Zhang  
 
-## Features
-- **Indexed Word Search**: Quickly finds and outputs all occurrences of a given word in indexed files.
-- **Case-Sensitive & Case-Insensitive Modes**: Supports both exact case matching and lowercase normalization for flexible searching.
-- **Efficient Hash Table Implementation**: Uses chaining to handle collisions and ensures fast lookup times.
-- **Recursive Directory Traversal**: Indexes all files within a given directory structure.
-- **Optimized Memory Management**: Expands dynamically while maintaining a load factor below 70%.
-- **Comprehensive Testing**: Unit tests and diff-based validation ensure correctness and robustness.
- 
----
+📌 **Project Documentation:** [Gerp Replica](https://narrow-theory-18d.notion.site/grep-Replica-1b9436c3d41a817daa64ff16b9604219?pvs=74)  
 
-## How It Works
-1. **Indexing Phase**:
-   - Recursively traverses the specified directory.
-   - Reads each file line by line, extracting words and storing them in a hash table.
-   - Creates a mapping between words and their line locations for quick lookup.
+## 📝 Purpose  
+Gerp is a powerful word indexing and searching tool that processes an entire directory, indexing words efficiently to allow **fast retrieval** of all lines containing a queried word. It supports **case-sensitive** and **case-insensitive** searches and allows users to specify an output file for search results.  
 
-2. **Query Phase**:
-   - Accepts search queries from users.
-   - Retrieves matching lines from indexed data efficiently.
-   - Outputs results to the specified file.
+## 🚀 How It Works  
+1. **Indexing Phase:**  
+   - Recursively traverses a directory and processes each file.  
+   - Extracts words and indexes them in **two hash tables** (case-sensitive and lowercase).  
+   - Stores the original text lines in a **vector** for quick retrieval.  
+
+2. **Search Phase:**  
+   - Users enter words to search.  
+   - Retrieves matching lines using hash tables and outputs them to a specified file.  
 
 ---
 
-## Installation & Usage
-### Compilation
-```sh
+## 📁 Program Files  
+
+- **`main.cpp`**  
+  - Handles command-line arguments and initializes Gerp.  
+- **`Gerp.h` & `Gerp.cpp`**  
+  - Implements the core search engine, manages hash tables, and runs the interactive search loop.  
+- **`HashTable.h` & `HashTable.cpp`**  
+  - Implements a **chaining-based hash table** for efficient word indexing.  
+- **`unit_tests.h`**  
+  - Contains automated tests for Gerp's functionality.  
+- **`Makefile`**  
+  - Build automation for compiling and running tests.  
+
+---
+
+## ⚙ Compiling and Running  
+
+### **Compile Gerp**  
+```bash
 make gerp
 ```
 
-### Running the Program
-```sh
+### **Run Gerp**  
+```bash
 ./gerp DirectoryToIndex OutputFile
 ```
-- `DirectoryToIndex`: Directory to scan and index.
-- `OutputFile`: File where search results are stored.
+- `DirectoryToIndex` → The directory to search.  
+- `OutputFile` → The file where results will be written.  
 
 ---
 
-## Data Structures
-- **Hash Table**: Implemented with an array of buckets using linked list chaining.
-- **Bucket**: Contains a linked list of Key-Value pairs.
-- **Key-Value Pair**: Stores a word as the key and a list of line indices where the word appears.
-- **Set**: Used to remove duplicate words in a line before inserting into the hash table.
+## 🏗 Architectural Overview  
+
+### **Core Data Structures**  
+- **Vector of Text Lines:** Stores all original file lines for fast retrieval.  
+- **Case-Sensitive Hash Table:** Maps words to their line indices.  
+- **Lowercase Hash Table:** Supports case-insensitive searches.  
+
+### **Hash Table Design**  
+- Implemented using an **array of buckets** with **chaining** for collision resolution.  
+- Each bucket stores a **linked list** of `KeyValue` pairs:  
+  - **Key:** The word.  
+  - **Value:** A list of line numbers where the word appears.  
+- Automatically resizes when load factor exceeds **70%**.  
+
+### **Indexing Algorithm**  
+1. Recursively traverses directories and reads files.  
+2. Processes each line, extracts words, and normalizes them.  
+3. Inserts words into **both hash tables** (case-sensitive and lowercase).  
+4. Stores the **entire line** for fast retrieval when a match is found.  
+
+### **Search Algorithm**  
+1. Looks up the word in the appropriate hash table.  
+2. Retrieves the list of line indices.  
+3. Outputs matching lines, formatted as:  
+   ```
+   filepath:line_number: text
+   ```
 
 ---
 
-## Algorithms
-### Directory Parsing
-- Uses **recursive traversal** to scan all subdirectories and files.
-- Calls `ParseFile()` for each file.
+## 🛠 Testing and Validation  
 
-### File Parsing (`ParseFile()` → `ParseLine()`)
-- Reads each file line-by-line.
-- Extracts words by stripping non-alphanumeric characters.
-- Adds words to a **set** to remove duplicates.
-- Stores words in **case-sensitive** and **lowercase hash tables**.
-- Saves file path, line number, and content for quick retrieval.
+1. **Unit Tests:**  
+   - Hash table insertion, retrieval, and expansion.  
+   - File parsing and directory traversal.  
+   - Case-sensitive and case-insensitive searches.  
 
-### Hash Table Operations
-- **Insertion**: Uses a **hash function** to determine bucket placement.
-- **Collision Resolution**: Uses **chaining** via linked lists.
-- **Expansion**: Doubles hash table size when the **load factor** exceeds 70%.
-- **Querying**: Retrieves words efficiently using **O(1) average lookup time**.
+2. **Integration Testing:**  
+   - Diff testing against a reference implementation.  
+   - **Valgrind memory leak analysis** to ensure correctness.  
 
 ---
 
-## Testing
-### Unit Testing
-- Validates individual hash table operations.
-- Ensures correct indexing and retrieval.
+## 📌 Key Features & Optimizations  
 
-### Integration Testing
-- Confirms Gerp correctly traverses directories and processes files.
-
-### Diff-Based Validation
-- Compares Gerp's output with `the_gerp` reference implementation.
-- Uses sorting and `diff` for consistency checking.
-
-### Performance Testing
-- Runs **Valgrind** to detect memory leaks and inefficiencies.
-- Benchmarks execution time on large text datasets.
+✅ **Fast Word Lookup** using hash tables (O(1) average lookup time).  
+✅ **Handles Large Text Datasets** with efficient indexing.  
+✅ **Supports Case-Insensitive Searches** via dual hash table indexing.  
+✅ **Automatically Expands Hash Table** to maintain performance.  
+✅ **Memory-Optimized Storage** using linked lists and hash buckets.  
 
 ---
 
-## Comparison to `grep`
-| Feature | `grep` | **Gerp** |
-|---------|--------|---------|
-| Real-time search | ✅ | ❌ (pre-indexed) |
-| Indexed search | ❌ | ✅ |
-| Case-insensitive search | ✅ | ✅ |
-| Recursive directory traversal | ✅ | ✅ |
-| Optimized for large datasets | ❌ | ✅ |
-
----
-
-## Contributors
-- **Duncan Johnson**
-- **Eddy Zhang**
-
----
-
-## Future Improvements
-- **Multi-threading support** for faster indexing.
-- **Compressed storage format** to reduce memory usage.
-- **Improved query features** such as regex matching.
-
----
+📂 *For full documentation and implementation details, refer to the [Notion Project Page](https://narrow-theory-18d.notion.site/grep-Replica-1b9436c3d41a817daa64ff16b9604219?pvs=74).*  
